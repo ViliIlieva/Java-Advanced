@@ -1,2 +1,2 @@
 # Java-Advanced
-My homework,exercise and exams from fundamentals course in SoftUni
+My homework,exercise and exams from Advanced course in SoftUni
