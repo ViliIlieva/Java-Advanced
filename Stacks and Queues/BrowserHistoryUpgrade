@@ -1,0 +1,41 @@
+import java.util.ArrayDeque;
+import java.util.Scanner;
+
+public class BrowserHistoryUpgrade {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        ArrayDeque <String> backUrl = new ArrayDeque<>();
+        ArrayDeque <String> forwardQ = new ArrayDeque<>();
+
+        String input = scanner.nextLine();
+        String toRemove = "";
+        String forwardUrl = "";
+
+        while (!input.equals("Home")){
+            if(input.equals("back")){
+                if(backUrl.size()>1){
+                    toRemove = backUrl.pop();
+                    forwardQ.push(toRemove);
+                    System.out.println(backUrl.peek());
+
+                }else{
+                    System.out.println("no previous URLs");
+                }
+            }else if(input.equals("forward")) {
+                if(forwardQ.size()>0){
+                    forwardUrl = forwardQ.pop();
+                    System.out.println(forwardUrl);
+                    backUrl.push(forwardUrl);
+                }else{
+                    System.out.println("no next URLs");
+                }
+            }else {
+                System.out.println(input);
+                backUrl.push(input);
+                forwardQ.clear();
+            }
+            input = scanner.nextLine();
+        }
+    }
+}
