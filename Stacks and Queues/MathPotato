@@ -1,0 +1,44 @@
+import java.util.ArrayDeque;
+import java.util.Scanner;
+
+public class MathPotato {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        String [] children = scanner.nextLine().split(" ");
+        int n = Integer.parseInt(scanner.nextLine());
+
+        ArrayDeque <String> childQ = new ArrayDeque<>();
+        for (int i = 0; i < children.length; i++) {
+            childQ.offer(children[i]);
+        }
+        int countCycle = 0;
+
+        while (childQ.size() != 1){
+            countCycle++;
+            for (int i = 1; i < n; i++) {
+                String currentChild = childQ.poll();
+                childQ.offer(currentChild);
+            }
+            if(!isPrime(countCycle)) {
+                System.out.println("Removed " + childQ.poll());
+            }else{
+                String currentChild = childQ.peek();
+                System.out.println("Prime " + currentChild);
+            }
+        }
+        System.out.printf("Last is %s", childQ.peek());
+
+    }
+    public static boolean isPrime(int n) {
+        if (n<= 1) {
+            return false;
+        }
+        for (int i = 2; i< n; i++) {
+            if (n % i == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
