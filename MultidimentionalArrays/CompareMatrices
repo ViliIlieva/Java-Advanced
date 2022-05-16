@@ -1,0 +1,45 @@
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class CompareMatrices {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        String[] sizeFirst = scanner.nextLine().split(" ");
+        int rowsFirst = Integer.parseInt(sizeFirst[0]);
+        int colsFirst = Integer.parseInt(sizeFirst[1]);
+        int[][] firstMatrix = new int[rowsFirst][colsFirst];
+        boolean matrixIsEqual = false;
+
+        for (int i = 0; i < rowsFirst; i++) {
+            int[] rowData = Arrays.stream(scanner.nextLine().split(" "))
+                    .mapToInt(Integer::parseInt)
+                    .toArray();
+            firstMatrix[i] = rowData;
+        }
+        String[] sizeSec = scanner.nextLine().split(" ");
+        int rowsSec = Integer.parseInt(sizeSec[0]);
+        int colsSec = Integer.parseInt(sizeSec[1]);
+        int[][] secondMatrix = new int[rowsFirst][colsFirst];
+
+        if (rowsFirst != rowsSec || colsFirst != colsSec) {
+            System.out.println("not equal");
+            return;
+        }
+        for (int i = 0; i < rowsSec; i++) {
+            int[] rowData = Arrays.stream(scanner.nextLine().split(" "))
+                    .mapToInt(Integer::parseInt)
+                    .toArray();
+            secondMatrix[i] = rowData;
+        }
+        for (int i = 0; i < rowsFirst; i++) {
+            for (int j = 0; j < colsFirst; j++) {
+                if (firstMatrix[i][j] != secondMatrix[i][j]) {
+                    System.out.println("not equal");
+                    return;
+                }
+            }
+        }
+            System.out.println("equal");
+    }
+}
