@@ -1,0 +1,31 @@
+import java.lang.reflect.Array;
+import java.util.ArrayDeque;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Scanner;
+
+public class BasicStackOperations {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        int [] input = Arrays.stream(scanner.nextLine().split(" "))
+                .mapToInt(Integer::parseInt)
+                .toArray();
+        ArrayDeque<Integer> stack = new ArrayDeque<>();
+        for (int i = 0; i < input[0]; i++) {
+            stack.push(scanner.nextInt());
+        }
+        for (int i = 0; i < input[1]; i++) {
+            stack.pop();
+        }
+        if(stack.contains(input[2])){
+            System.out.println("true");
+        }else{
+            if(stack.isEmpty()){
+                System.out.println(0);
+            }else {
+                System.out.println(Collections.min(stack));
+            }
+        }
+    }
+}
