@@ -1,0 +1,67 @@
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class WrongMeasurements {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        int n = Integer.parseInt(scanner.nextLine());
+        int [][] printMatrix = new int[n][];
+        int [][] firstMatrix = new int[n][];
+
+        for (int row = 0; row < n; row++) {
+            int [] input = Arrays.stream(scanner.nextLine().split(" "))
+                    .mapToInt(Integer::parseInt)
+                    .toArray();
+            firstMatrix[row] = input;
+        }
+        for (int row = 0; row < n; row++) {
+            printMatrix [row] = new int[firstMatrix[row].length];
+            for (int col = 0; col < firstMatrix[row].length; col++) {
+                printMatrix[row][col] = firstMatrix[row][col];
+            }
+        }
+        int [] input = Arrays.stream(scanner.nextLine().split(" "))
+                .mapToInt(Integer::parseInt)
+                .toArray();
+        int wrong = firstMatrix[input[0]][input[1]];
+
+
+        for (int row = 0; row < n; row++) {
+            for (int col = 0; col < firstMatrix[row].length; col++) {
+                if(firstMatrix[row][col] == wrong){
+                    int sum = 0;
+                    if(col-1 >= 0) {
+                        if (firstMatrix[row][col - 1] != wrong) {
+                            sum = sum + firstMatrix[row][col - 1];
+                        }
+                    }
+                    if(col+1 < firstMatrix[row].length) {
+                        if (firstMatrix[row][col + 1] != wrong) {
+                            sum = sum + firstMatrix[row][col + 1];
+                        }
+                    }
+                    if(row-1 >= 0) {
+                        if (firstMatrix[row - 1][col] != wrong) {
+                            sum = sum + firstMatrix[row - 1][col];
+                        }
+                    }
+                    if(row+1 < firstMatrix.length) {
+                        if (firstMatrix[row + 1][col] != wrong) {
+                            sum += firstMatrix[row + 1][col];
+                        }
+                    }
+                    printMatrix[row][col] = sum;
+                }
+            }
+        }
+
+        for (int row = 0; row < n; row++) {
+            for (int col = 0; col < printMatrix[row].length; col++) {
+                System.out.print(printMatrix[row][col] + " ");
+            }
+            System.out.println();
+        }
+
+    }
+}
