@@ -1,0 +1,36 @@
+import java.util.*;
+import java.util.stream.Collectors;
+
+public class Voina {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        Set<Integer> firstDeck = new LinkedHashSet<>();
+        Arrays.stream(scanner.nextLine().split(" ")).mapToInt(Integer::parseInt).forEach(firstDeck::add);
+        Set<Integer> secDeck = new LinkedHashSet<>();
+        Arrays.stream(scanner.nextLine().split(" ")).mapToInt(Integer::parseInt).forEach(secDeck::add);
+       int counter = 0;
+        for (int i = 0; i < 50; i++) {
+           Iterator<Integer> firsIterator = firstDeck.iterator();
+           int firstCard = firsIterator.next();
+           firsIterator.remove();
+           Iterator<Integer> secIterator = secDeck.iterator();
+           int secCard = secIterator.next();
+           secIterator.remove();
+           if(firstCard > secCard){
+               firstDeck.add(firstCard);
+               firstDeck.add(secCard);
+           }else{
+               secDeck.add(firstCard);
+               secDeck.add(secCard);
+           }
+        }
+        if(firstDeck.size() > secDeck.size()){
+            System.out.println("First player win!");
+        }else if(firstDeck.size() < secDeck.size()){
+            System.out.println("Second player win!" );
+        }else{
+            System.out.println("Draw!");
+        }
+    }
+}
