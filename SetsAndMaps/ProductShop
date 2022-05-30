@@ -1,0 +1,30 @@
+import java.util.*;
+
+public class ProductShop {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        String input = scanner.nextLine();
+        Map<String, Map<String, Double>> productMap = new TreeMap<>();
+
+        while (!input.equals("Revision")){
+            String [] productInfo = input.split(", ");
+            String shop = productInfo[0];
+            String product = productInfo[1];
+            double price = Double.parseDouble(productInfo[2]);
+
+            productMap.putIfAbsent(shop, new LinkedHashMap<>());
+            productMap.get(shop).put(product, price);
+
+
+            input = scanner.nextLine();
+        }
+        productMap.forEach((k,v) -> {
+            System.out.printf("%s->%n",k);
+            v.forEach((g,l)->{
+                System.out.printf("Product: %s, Price: %.1f%n",g, l);
+            });
+
+        });
+    }
+}
