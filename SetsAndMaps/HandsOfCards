@@ -1,0 +1,72 @@
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Scanner;
+
+public class HandsOfCards {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        Map<String, HashSet<String>> players = new LinkedHashMap<>();
+        String input = scanner.nextLine();
+        int cardPoint = 0;
+
+        while (!input.equals("JOKER")) {
+            String[] command = input.split(": ");
+            String name = command[0];
+            String[] cards = command[1].split(", ");
+            players.putIfAbsent(name, new HashSet<>());
+            for (String card : cards) {
+                players.get(name).add(card);
+            }
+            input = scanner.nextLine();
+        }
+        for (var player : players.entrySet()) {
+            String name = player.getKey();
+            int point = calcPoints(player.getValue());
+            System.out.printf("%s: %d%n", name, point);
+        }
+    }
+    public static int calcPoints(HashSet<String> cards) {
+        int points = 0;
+        for (String card : cards) {
+            String power = card.substring(0, card.length() - 1);
+            char type = card.charAt(card.length() - 1);
+            int cardPoint = getPower(power) * getType(String.valueOf(type));
+            points += cardPoint;
+        }
+        return points;
+    }
+    public static int getPower(String power) {
+        switch (power) {
+            case "J":
+                return 11;
+            case "Q":
+                return 12;
+            case "K":
+                return 13;
+            case "A":
+                return 14;
+            default:
+                return Integer.parseInt(power);
+        }
+    }
+    public static int getType(String type) {
+        int typePoint = 0;
+        switch (type) {
+            case "S":
+                typePoint = 4;
+            break;
+            case "H":
+                typePoint = 3;
+            break;
+            case "D":
+                typePoint = 2;
+            break;
+            case "C":
+                typePoint = 1;
+            break;
+        }
+        return  typePoint;
+    }
+}
