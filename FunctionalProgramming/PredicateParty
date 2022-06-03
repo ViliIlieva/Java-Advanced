@@ -1,0 +1,54 @@
+import java.util.*;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+
+public class PredicateParty {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        List <String> guests = Arrays.stream(scanner.nextLine().split(" "))
+                .collect(Collectors.toList());
+        String input = scanner.nextLine();
+        while(!input.equals("Party!")){
+            String [] inputArr = input.split(" ");
+            String command = inputArr[0];
+            Predicate <String> predicate = getPredicate(inputArr);
+            switch (command){
+                case "Remove":
+                    guests.removeIf(predicate);
+                    break;
+                case "Double":
+                    List<String> peopleToAddAgain = new ArrayList<>();
+                    guests.stream().filter(predicate).forEach(person -> peopleToAddAgain.add(person)) ;
+                    guests.addAll(peopleToAddAgain);
+                    break;
+            }
+            input = scanner.nextLine();
+        }
+        if(guests.isEmpty()){
+            System.out.println("Nobody is going to the party!");
+        }else{
+            Collections.sort(guests);
+            String result = String.join(", ", guests) + " are going to the party!";
+            System.out.println(result);
+        }
+    }
+    public static Predicate<String > getPredicate(String [] input){
+        Predicate <String> predicate = null;
+        String filterName = input[1];
+        String filterCriteria = input[2];
+
+        switch (filterName){
+            case "StartsWith":
+                predicate = name -> name.startsWith(filterCriteria);
+                break;
+            case "EndsWith":
+                predicate = name -> name.endsWith(filterCriteria);
+                break;
+            case "Length":
+                predicate = name -> name.length() == Integer.parseInt(filterCriteria);
+                break;
+        }
+        return predicate;
+    }
+}
