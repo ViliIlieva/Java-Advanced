@@ -1,0 +1,92 @@
+import java.util.function.Consumer;
+
+public class SmartArray {
+    private Integer[] data;
+    private int size;
+
+
+    public SmartArray() {
+        this.data = new Integer[4];
+        this.size = 0;
+    }
+
+    public void add(int element) {
+        if (this.size == this.data.length) {//увеличава мястото
+            this.data = grow();
+        }
+        this.data[size] = element;// за пръв път добавя елемент
+        size++;                   //добавяме втори път
+    }
+
+    public int get(int index) {
+        validateIndex(index);
+        return this.data[index];
+    }
+
+    private void validateIndex(int index) {
+        if (index < 0 || index >= this.size) {
+            throw new IndexOutOfBoundsException("Invalid index" + index);
+        }
+    }
+
+    public int size() {
+        return this.size;
+    }
+
+    public int remove(int index) {
+        validateIndex(index);
+        this.size--;
+        int element = this.data[index];
+        for (int i = index; i < this.size; i++) {
+            this.data[i] = this.data[i + 1];
+        }
+        this.data[this.size] = null;
+        if (this.data.length / 4 >= this.size || this.data.length / 4 == 4) {
+            this.data = shrink();
+        }
+        return element;
+    }
+
+    public boolean contains(int element) {
+        for (int i = 0; i < this.size; i++) {
+            if (this.data[i] == element) {
+                return true;
+
+            }
+        }
+        return false;
+    }
+
+    public void add(int index, int element) {
+        validateIndex(index);
+
+        int lastElement = this.data[this.size - 1];
+        for (int i = this.size - 1; i > index; i--) {
+            this.data[i] = this.data[i - 1];
+        }
+        this.data[index] = element;
+        add(lastElement);
+
+    }
+
+    public void forEach(Consumer<Integer> consumer) {
+        for (int i = 0; i < this.size; i++) {
+            Integer e = this.data[i];
+            consumer.accept(e);
+        }
+    }
+
+    private Integer[] grow() {//метод за увеличаване на масива двойно
+        Integer[] newData = new Integer[this.data.length * 2];
+
+        System.arraycopy(this.data, 0, newData, 0, this.data.length);
+
+        return newData;
+    }
+
+    private Integer[] shrink() {
+        Integer[] newData = new Integer[this.data.length / 2];
+        System.arraycopy(this.data, 0, newData, 0, this.size);//замества for цикъл за да прехвърли елементите от единия арр в другия арей
+        return newData;
+    }
+}
