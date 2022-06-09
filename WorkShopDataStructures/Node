@@ -1,0 +1,13 @@
+public class Node<toString> {
+    int value;//стойността на кутийката
+    Node next;//следващата кутийка
+    Node prev;
+
+    public Node(int value) {
+        this.value = value;
+    }
+    @Override
+    public String toString(){
+        return value + "";
+    }
+}
