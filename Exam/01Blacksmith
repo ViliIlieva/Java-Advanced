@@ -1,0 +1,75 @@
+import java.util.*;
+import java.util.stream.Collectors;
+
+public class Blacksmith {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        ArrayDeque<Integer> steel = new ArrayDeque<>();
+        ArrayDeque<Integer> carbon = new ArrayDeque<>();
+        Map<String, Integer> Map = new TreeMap<>();
+
+        String[] inputSteel = scanner.nextLine().split(" ");
+        for (String s : inputSteel) {
+            steel.offer(Integer.parseInt(s));
+        }
+        String[] inputCarbon = scanner.nextLine().split(" ");
+        for (String s : inputCarbon) {
+            carbon.push(Integer.parseInt(s));
+        }
+        int sum = 0;
+        int counter = 0;
+        while (steel.size() != 0 && carbon.size() != 0) {
+            int steelElement = steel.pop();
+            int carbonElement = carbon.poll();
+            sum = steelElement + carbonElement;
+            switch (sum) {
+                case 70:
+                    Map.putIfAbsent("Gladius", 0);
+                    Map.put("Gladius", Map.get("Gladius") + 1);
+                    counter++;
+                    break;
+                case 80:
+                    Map.putIfAbsent("Shamshir", 0);
+                    Map.put("Shamshir", Map.get("Shamshir") + 1);
+                    counter++;
+                    break;
+                case 90:
+                    Map.putIfAbsent("Katana", 0);
+                    Map.put("Katana", Map.get("Katana") + 1);
+                    counter++;
+                    break;
+                case 110:
+                    Map.putIfAbsent("Sabre", 0);
+                    Map.put("Sabre", Map.get("Sabre") + 1);
+                    counter++;
+                    break;
+                default:
+                    int increaseCarbonElement = carbonElement + 5;
+                    carbon.push(increaseCarbonElement);
+            }
+        }
+        if (counter > 0) {
+            System.out.println("You have forged " + counter + " swords.");
+        }else{
+            System.out.println("You did not have enough resources to forge a sword.");
+        }
+        if (steel.isEmpty()) {
+            System.out.println("Steel left: none");
+        } else {
+            String collect = steel.stream().map(String::valueOf).collect(Collectors.joining(", "));
+            System.out.println("Steel left: " + collect);
+        }
+        if (carbon.isEmpty()) {
+            System.out.println("Carbon left: none");
+        } else {
+            List<String> collect = carbon.stream().map(String::valueOf).collect(Collectors.toList());
+            System.out.println("Carbon left: " + String.join(", ", collect));
+        }
+        Map.entrySet().stream()
+                .filter(e -> e.getValue() != 0)
+                .forEach(el -> System.out.println(el.getKey() + ": " + el.getValue()));
+
+    }
+
+}
