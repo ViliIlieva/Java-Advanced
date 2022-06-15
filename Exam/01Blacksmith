@@ -71,5 +71,4 @@ public class Blacksmith {
                 .forEach(el -> System.out.println(el.getKey() + ": " + el.getValue()));
 
     }
-
 }
