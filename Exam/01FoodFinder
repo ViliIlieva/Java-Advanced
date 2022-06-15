@@ -1,0 +1,44 @@
+import java.util.*;
+
+public class FoodFinder01 {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        ArrayDeque<Character> vowels = new ArrayDeque<>();
+        ArrayDeque<Character> consonants = new ArrayDeque<>();
+
+        Arrays.stream(scanner.nextLine().split(" ")).forEach(e -> vowels.offer(e.charAt(0)));
+        Arrays.stream(scanner.nextLine().split("\\s+")).forEach(e -> consonants.push(e.charAt(0)));
+
+        String[] words = new String[]{"pear", "flour", "pork", "olive"};
+        String[] foundWords = new String[]{"****", "*****", "****", "*****"};
+
+        while (!consonants.isEmpty()) {
+            char currentVowel = vowels.poll();
+            char currentConsonant = consonants.pop();
+            vowels.offer(currentVowel);
+            for (int i = 0; i < words.length; i++) {
+                String currentWord = words[i];
+                int indexVowel = currentWord.indexOf(currentVowel);
+                int indexConsonants = currentWord.indexOf(currentConsonant);
+                if (indexVowel >= 0) {
+                    foundWords[i] = foundWords[i].substring(0, indexVowel) + currentVowel + foundWords[i].substring(indexVowel + 1);
+                }
+                if (indexConsonants >= 0) {
+                    foundWords[i] = foundWords[i].substring(0, indexConsonants) + currentConsonant + foundWords[i].substring(indexConsonants + 1);
+                }
+            }
+        }
+        int count = 0;
+        List<String> output = new ArrayList<>();
+        for (int i = 0; i < words.length; i++) {
+            if(!foundWords[i].contains("*")){
+                count++;
+                output.add(foundWords[i]);
+            }
+        }
+        System.out.println("Words found: " + count);
+        output.forEach(System.out::println);
+
+    }
+}
