@@ -1,0 +1,61 @@
+import java.util.ArrayDeque;
+import java.util.Arrays;
+import java.util.Scanner;
+import java.util.stream.Collectors;
+
+public class Meeting {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        ArrayDeque <Integer> males = new ArrayDeque<>();
+        Arrays.stream(scanner.nextLine().split(" "))
+                .map(Integer::parseInt)
+                .forEach(males::push);
+        ArrayDeque<Integer> females = Arrays.stream(scanner.nextLine().split(" "))
+                .map(Integer::parseInt)
+                .collect(Collectors.toCollection(ArrayDeque::new));
+
+        int countMatches = 0;
+        while (!males.isEmpty() && !females.isEmpty()){
+            int currentFemale = females.peek();
+            int currentMale = males.peek();
+            if(currentFemale <= 0){
+                females.remove();
+                continue;
+            }else if(currentMale <= 0){
+                males.pop();
+                continue;
+            }
+            if(currentFemale % 25 == 0) {
+                females.remove();
+                females.remove();
+                continue;
+            } else if(currentMale % 25 == 0) {
+                males.pop();
+                males.pop();
+                continue;
+            }
+            if(currentFemale == currentMale) {
+                countMatches++;
+                males.pop();
+                females.remove();
+            } else {
+               females.remove();
+               currentMale = currentMale - 2;
+               males.pop();
+               males.push(currentMale);
+            }
+        }
+        System.out.println("Matches: " + countMatches);
+
+        String remainingMales = males.isEmpty() ? "none" : males.stream()
+                .map(String::valueOf)
+                .collect(Collectors.joining(", "));
+        System.out.println("Males left: " + remainingMales);
+
+        String remainingFemales = females.isEmpty() ? "none" : females.stream()
+                .map(String::valueOf)
+                .collect(Collectors.joining(", "));
+        System.out.println("Females left: " + remainingFemales);
+    }
+}
