@@ -1,0 +1,101 @@
+import java.util.Scanner;
+
+public class FormulaOne {
+    private static int row = 0;
+    private static int col = 0;
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        int n = Integer.parseInt(scanner.nextLine());
+        int countCommand = Integer.parseInt(scanner.nextLine());
+        boolean win = false;
+        int prevRow = 0;
+        int prevCol = 0;
+
+        char[][] matrix = new char[n][n];
+
+        for (int r = 0; r < n; r++) {
+            String input = scanner.nextLine();
+            for (int c = 0; c < n; c++) {
+                matrix[r][c] = input.charAt(c);
+                if (input.charAt(c) == 'P') {
+                    row = r;
+                    col = c;
+                }
+            }
+        }
+        matrix[row][col] = '.';
+
+        for (int i = 0; i < countCommand; i++) {
+            String command = scanner.nextLine();
+            prevRow = row;
+            prevCol = col;
+
+            move(matrix, command);
+
+            if (matrix[row][col] == 'B') {
+                move(matrix, command);
+            } else if (matrix[row][col] == 'T') {
+                row = prevRow;
+                col = prevCol;
+            } else if (matrix[row][col] == 'F') {
+                win = true;
+                matrix[row][col] = 'P';
+                break;
+            }
+        }
+
+        matrix[row][col] = 'P';
+
+        if (win) {
+            System.out.println("Well done, the player won first place!");
+        } else {
+            System.out.println("Oh no, the player got lost on the track!");
+        }
+        printMatrix(matrix, row, col);
+    }
+
+    public static void move(char[][] matrix, String command) {
+        int n = matrix.length-1;
+        switch (command) {
+            case "up":
+                if (row == 0) {
+                    row = n;
+                } else{
+                    row--;  
+                }
+                break;
+            case "down":
+                if (row == n) {
+                    row = 0;
+                }else {
+                    row++;
+                }
+                break;
+            case "right":
+                if (col == n) {
+                    col = 0;
+                }else {
+                    col++;
+                }
+                break;
+            case "left":
+                if (col == 0) {
+                    col = n;
+                }else {
+                    col--;
+                }
+                break;
+        }
+    }
+
+    public static void printMatrix(char[][] matrix, int r, int c) {
+        for (char[] chars : matrix) {
+            for (char s : chars) {
+                System.out.print(s);
+            }
+            System.out.println();
+        }
+    }
+}
