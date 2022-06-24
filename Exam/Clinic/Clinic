@@ -36,7 +36,6 @@ public class Clinic {
     public int getCount() {
         return data.size();
     }
-
     public String getStatistics() {
         StringBuilder sb = new StringBuilder();
         sb.append("The clinic has the following patients:").append(System.lineSeparator());
