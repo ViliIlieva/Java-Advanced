@@ -1,0 +1,109 @@
+package Exam;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+import java.util.stream.Collectors;
+
+public class StickyFingers {
+    private static int row = 0;
+    private static int col = 0;
+    private static int pocket = 0;
+    private static boolean outOfMatrix = false;
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        int n = Integer.parseInt(scanner.nextLine());
+        String[][] matrix = new String[n][n];
+        List<String> inputCommands = Arrays.stream(scanner.nextLine().split(","))
+                .collect(Collectors.toList());
+        boolean policeCatchHim = false;
+
+        //fill matrix
+        for (int i = 0; i < n; i++) {
+            String[] input = scanner.nextLine().split(" ");
+            for (int j = 0; j < n; j++) {
+                String currentSymbol = input[j];
+                matrix[i][j] = currentSymbol;
+                if (currentSymbol.equals("D")) {
+                    row = i;
+                    col = j;
+                }
+            }
+        }
+
+        for (int i = 0; i < inputCommands.size(); i++) {
+            String command = inputCommands.get(i);
+            matrix[row][col] = "+";
+            move(matrix, command);
+
+            if (outOfMatrix) {
+                System.out.println("You cannot leave the town, there is police outside!");
+                matrix[row][col] = "D";
+                outOfMatrix = false;
+            }else if (matrix[row][col].equals("+")) {
+                matrix[row][col] = "D";
+            } else if (matrix[row][col].equals("$")) {
+                matrix[row][col] = "D";
+                int sum = row * col;
+                pocket += sum;
+                System.out.printf("You successfully stole %d$.%n", sum);
+            } else if (matrix[row][col].equals("P")) {
+                System.out.printf("You got caught with %s$, and you are going to jail.%n", pocket);
+                matrix[row][col] = "#";
+                policeCatchHim = true;
+                break;
+            }
+        }
+        if(!policeCatchHim) {
+            System.out.printf("Your last theft has finished successfully with %s$ in your pocket.%n",pocket);
+        }
+
+        printMatrix(matrix);
+    }
+
+    private static void move(String[][] matrix, String command) {
+        int n = matrix.length - 1;
+        switch (command) {
+            case "up":
+                if (row != 0) {
+                    row--;
+                } else {
+                    outOfMatrix = true;
+                }
+                break;
+            case "down":
+                if (row != n) {
+                    row++;
+                } else {
+                    outOfMatrix = true;
+                }
+                break;
+            case "right":
+                if (col != n) {
+                    col++;
+                } else {
+                    outOfMatrix = true;
+                }
+                break;
+            case "left":
+                if (col != 0) {
+                    col--;
+                } else {
+                    outOfMatrix = true;
+                }
+                break;
+        }
+    }
+
+    public static void printMatrix(String[][] matrix) {
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix.length; j++) {
+                System.out.print(matrix[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
+}
